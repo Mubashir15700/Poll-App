@@ -17,7 +17,7 @@ const Dropdown = ({ displayName }: { displayName: string | null }) => {
     const dispatch = useDispatch();
     const router = useRouter();
 
-    function deleteCookie() {
+    function logout() {
         axios.post("/auth/logout")
             .then(response => {
                 // Check if logout was successful
@@ -47,9 +47,9 @@ const Dropdown = ({ displayName }: { displayName: string | null }) => {
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56 bg-gray-300 border rounded">
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={logout}>
                     <LogOut className="mr-2 h-4 w-4" />
-                    <span onClick={deleteCookie}>Log out</span>
+                    <span>Log out</span>
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>

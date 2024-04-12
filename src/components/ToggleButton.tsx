@@ -1,8 +1,3 @@
-interface ToggleButtonProps {
-    isOpen: boolean;
-    toggleNavbar: () => void;
-}
-
 const ToggleButton: React.FC<ToggleButtonProps> = ({ isOpen, toggleNavbar }) => {
     return (
         <button

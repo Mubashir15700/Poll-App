@@ -1,10 +1,5 @@
 import { useState } from "react";
-import {
-    Card,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Badge } from "@/components/ui/badge";
@@ -14,27 +9,7 @@ import { RootState } from "@/redux/store";
 import axios from "../config/axios";
 import { toast } from "react-hot-toast";
 
-interface CreatorInfo {
-    _id: string,
-    username: string,
-    email: string
-}
-
-interface Poll {
-    _id: string;
-    question: string;
-    creatorInfo: CreatorInfo;
-    options: PollOption[];
-}
-
-interface PollOption {
-    value: string;
-    votedUsers: string[];
-    voteCount: number;
-    percentage: number;
-}
-
-const PollCard = ({ poll }: { poll: Poll }) => {
+const PollCard = ({ poll, onUpdatePoll }: { poll: Poll, onUpdatePoll: UpdatePollFunction }) => {
     const currentUserId = useSelector((state: RootState) => state.authReducer.userData?.userId);
     const [deleted, setDeleted] = useState(false);
 
@@ -52,15 +27,16 @@ const PollCard = ({ poll }: { poll: Poll }) => {
             });
     };
 
-    const handlePollVote = (pollId: string, optionId: string) => {
+    const handlePollVote = (pollId: string, optionValue: string) => {
         axios.post("/polls/vote", {
             userId: currentUserId,
             pollId,
-            selectedOption: optionId
+            selectedOption: optionValue
         })
             .then(response => {
                 if (response.status === 200) {
                     toast.success("Vote submitted successfully");
+                    onUpdatePoll(response.data.poll);
                 }
             })
             .catch(error => {

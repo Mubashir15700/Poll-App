@@ -50,7 +50,7 @@ const NewPoll = () => {
 
         axios.post("/polls/new", { question, userId: currentUserId })
             .then(response => {
-                if (response.status === 200) {
+                if (response.status === 201) {
                     router.push("/home");
                 } else {
                     console.log("failed: ", response);
